@@ -1,7 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-ReactDOM.render(<h1>Hello World!</h1>, document.getElementById("root"));
+const customStyle = {
+  color: "red",
+  fontSize: "20px",
+  border: "1px solid black"
+}
+
+//CHANGING THE PROPERTIE
+customStyle.color = "blue";
+
+ReactDOM.render(<h1 style={customStyle}>Hello World!</h1>, document.getElementById("root"));
+
+//INLINE STYLING: ReactDOM.render(<h1 style={{color: "red"}}>Hello World!</h1>, document.getElementById("root"));
 
 // If you're running this locally in VS Code use the commands:
 // npm install

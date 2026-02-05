@@ -11,3 +11,30 @@
 // to install the node modules and
 // npm run dev
 // to launch your react project in your browser
+
+import React from "react";
+import ReactDOM from "react-dom"
+
+const time = new Date(2019, 1, 1, 10);
+const currentTime = time.getHours();
+
+let greeting;
+
+const customStyle = {
+  color: "",
+};
+
+if (currentTime < 12) {
+  greeting = "Good morning";
+  customStyle.color = "red";
+} else if (currentTime < 18) {
+  greeting = "Good afternoon"
+  customStyle.color = "green";
+} else {
+  greeting = "Good evening"
+  customStyle.color = "blue";
+}
+
+ReactDOM.render(
+<h1 className="heading" style={customStyle}>{greeting}</h1>
+,document.getElementById("root"));

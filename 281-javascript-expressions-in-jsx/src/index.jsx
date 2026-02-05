@@ -1,7 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-ReactDOM.render(<h1>Hello World!</h1>, document.getElementById("root"));
+
+const firstName = "Angela";
+const lastName = "Yu;"
+const number = 5;
+
+
+ReactDOM.render(
+  <div>
+    <h1>Hello {firstName} {lastName}!</h1>
+    <p>Your lucky number is {number}.</p>
+  </div>
+, document.getElementById("root")
+);
 
 // If you're running this locally in VS Code use the commands:
 // npm install
