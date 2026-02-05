@@ -1,12 +1,16 @@
 import React from "react";
 import Card from "./Card";
 import contacts from "../contacts";
+import Avatar from "./Avatar";
+
 
 function App() {
   return (
     <div>
       <h1 className="heading">My Contacts</h1>
-
+      <Avatar 
+      img="https://miro.medium.com/v2/resize:fit:2400/1*8OkdLpw_7VokmSrzwXLnbg.jpeg"
+      />
       <Card
         name={contacts[0].name}
         img={contacts[0].imgURL}
