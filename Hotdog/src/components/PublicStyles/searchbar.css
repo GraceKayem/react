@@ -1,31 +1,37 @@
-.search-bar {
-  display: flex;
-  align-items: center;
-  font-size: 20px;
-  font-weight: 400;
-  border: 3px solid #1f3a5f;
-  border-radius: 20px;
-  overflow: hidden;
-  max-width: 650px;
+.search-bar-wrapper {
+  position: relative;
   width: 100%;
-  height: 50px;
-  margin-bottom: 25px;
-  transition: all 0.25s ease;
+  display: flex;
+  justify-content: center;
 }
+
+.search-bar { 
+  display: flex; 
+  align-items: center; 
+  font-size: 20px; 
+  font-weight: 400; 
+  border: 3px solid #1f3a5f; 
+  border-radius: 20px; 
+  overflow: hidden; 
+  max-width: 650px; 
+  width: 100%; 
+  height: 50px; 
+  transition: max-width 0.25s ease; }
 
 .search-bar:hover {
   max-width: 800px;
 }
 
-.search-bar::after {
-  max-width: 800px;
+.search-bar:focus-within {
   color: #333333;
-}
+  max-width: 800px;
+  /* border-color:#ffc72c !important; */
+} 
 
 .search-bar input,
 .search-bar select {
   color: #333333;
-  border: none;
+  border: 0;
   outline: none;
   padding-left: 14px;
   padding-right: 14px;
@@ -43,7 +49,6 @@
   color: #1f3a5f;
   border: 3px solid #1f3a5f !important;
   border-radius: 10px !important;
-  border: none;
   width: 50px;
   height:50px;
   cursor: pointer;
@@ -54,6 +59,61 @@
 }
 
 .search-btn:hover {
-  background-color: white;
+  background-color: #1f3a5f;
   color: #f5ba13;
+}
+
+/* select a service */
+
+
+
+/* search by provider name drop input show */
+.search-results {
+  position: absolute;
+  font-family: "Open Sans";
+  font-size: 15px;
+  font-weight: 400;
+  top: calc(100% + 6px); 
+  right: 0;
+  width: 37%;
+  margin-right: 100px;
+  background-color: white;
+  color: #333333;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(31, 58, 95,0.15);
+  list-style: none;
+  z-index: 999;
+}
+
+.result-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 10px;
+}
+
+.result-item:hover {
+  border-color: #ffc72c;
+}
+
+.no-results {
+  padding: 10px 16px;
+  color: #333333;
+}
+
+
+
+
+/* Style for the service selector dropdown */
+.select-dropdown {
+  background-color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  padding-right: 100px;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%231f3a5f' height='12' viewBox='0 0 24 24' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 20px;
+  justify-content: left;
+  align-items: left;
 }
