@@ -63,8 +63,41 @@
   color: #f5ba13;
 }
 
-/* select a service */
 
+/* select a service */
+.service-results {
+  position: absolute;
+  font-family: "Open Sans";
+  font-size: 15px;
+  font-weight: 400;
+  top: calc(100% + 6px); 
+  left: 0;
+  width: 37%;
+  max-width: 100%; 
+  margin-left: 100px;
+  background-color: white;
+  color: #333333;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(31, 58, 95,0.15);
+  list-style: none;
+  z-index: 999;
+}
+
+.service-item {
+  font-size: 15;
+  padding: 10px 16px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 10px;
+}
+
+.service-item:hover {
+  border-color: #ffc72c;
+}
+
+.service-item:focus-within {
+  border-color: #ffc72c;
+}
 
 
 /* search by provider name drop input show */
@@ -102,18 +135,3 @@
 }
 
 
-
-
-/* Style for the service selector dropdown */
-.select-dropdown {
-  background-color: white;
-  border-radius: 20px;
-  cursor: pointer;
-  padding-right: 100px;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%231f3a5f' height='12' viewBox='0 0 24 24' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 20px;
-  justify-content: left;
-  align-items: left;
-}

@@ -1,21 +1,74 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import fetch_Data from "./fetch_Data";
 import service_Lists from "./services_Lists";
 
 
-function SearchButton({ service, searchValue, onServiceChange, onSearchChange, onSearch }) {
+function SearchButton({ onServiceChange, onSearchChange, onSearch, service, searchValue }) {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [results, setResults] = useState([]);
+  const [serviceInput, setServiceInput] = useState(service || "");
+  const [providerInput, setProviderInput] = useState(searchValue || "");
+  const [serviceResults, setServiceResults] = useState([]);
+  const [providerResults, setProviderResults] = useState([]);
+  const [showServices, setShowServices] = useState(false);
+  const [showProviders, setShowProviders] = useState(false);
 
-  // Filter provider names based on input
-  const [showDropdown, setShowDropdown] = useState(false);
+  //select a service dropdown
+  const handleServiceInput = (value) => {
+    setServiceInput(value);
+    onServiceChange?.(value);
 
-  const handleChange = (value) => {
-    onSearchChange(value);
+    if (value.trim()) {
+      setProviderInput("");
+      onSearchChange?.("");
+    }
 
     if (!value.trim()) {
-      setResults([]);
-      setShowDropdown(false);
+      setServiceResults([]);
+      setShowServices(false);
+      return;
+    }
+
+    const filtered = service_Lists.filter((service) =>
+      service.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setServiceResults(filtered);
+    setShowServices(true);
+  };
+
+  const selectService = (service) => {
+    setServiceInput(service);
+    onServiceChange?.(service);
+
+    setProviderInput("");
+    onSearchChange?.("");
+
+    setTimeout(() => setShowServices(false), 0);
+
+    // if (location.pathname === "/") {
+    //   const params = new URLSearchParams();
+    //   params.append("search", service);
+    //   navigate(`/search?${params.toString()}`);
+    // }
+  };
+  
+
+  // Search by provider names 
+  const handleProviderInput = (value) => {
+    setProviderInput(value);
+    onSearchChange?.(value);
+
+    if (value.trim()) {
+      setServiceInput("");
+      onServiceChange?.("");
+    }
+
+    if (!value.trim()) {
+      setProviderResults([]);
+      setShowProviders(false);
       return;
     }
 
@@ -23,14 +76,39 @@ function SearchButton({ service, searchValue, onServiceChange, onSearchChange, o
       provider.toLowerCase().includes(value.toLowerCase())
     );
 
-    setResults(filtered);
-    setShowDropdown(true);
+    setProviderResults(filtered);
+    setShowProviders(true);
   };
 
-  const handleSelect = (provider) => {
-    onSearchChange(provider);
-    setShowDropdown(false);
+  const selectProvider = (provider) => {
+    setProviderInput(provider);
+    onSearchChange?.(provider);
+
+    setServiceInput("");
+    onServiceChange?.("");
+
+    setShowProviders(false);
+
+    // if (location.pathname === "/") {
+    //   const params = new URLSearchParams();
+    //   params.append("provider", provider);
+    //   navigate(`/services?${params.toString()}`)
+    // }
   };
+
+  //search button
+  const handleSearch = () => {
+    if (onSearch) onSearch();
+
+    if (location.pathname === "/") {
+      const params = new URLSearchParams();
+      if (serviceInput) params.append("service", serviceInput);
+      if (providerInput) params.append("provider", providerInput);
+
+      navigate(`/services?${params.toString()}`);
+    }
+  };
+
 
   return (
     <div className="search-bar-wrapper">
@@ -38,20 +116,37 @@ function SearchButton({ service, searchValue, onServiceChange, onSearchChange, o
       {/* Search bar */}
       <div className="search-bar">
         {/* Service selector */}
-        <select 
-        className="select-dropdown"
-        value={service} 
-        onChange={(e) => onServiceChange(e.target.value)}>
-          <option value="">Select a Service</option>
-          {service_Lists.map((serviceItem, index) => (
-            <option key={index} value={serviceItem}>
-              {serviceItem}
-            </option>
-          ))}
-        </select>
+        <input
+          type="text"
+          placeholder="Select a Service"
+          value={serviceInput}
+          readOnly
+          onChange={(e) => handleServiceInput(e.target.value)}
+          onFocus={() => {
+            setServiceResults(service_Lists);
+            setShowServices(true);
+          }}
+          className="provider-search-filter"
+        />
+        
+        {showServices && (
+          <ul className="service-results">
+            {/* {serviceResults.length > 0 &&  */}
+              {serviceResults.map((service, idx) => (
+                <li
+                  key={idx}
+                  className="service-item"
+                  onClick={() => selectService(service)}
+                >
+                  {service}
+                </li>
+              ))}
+          </ul>
+        )}
+
 
         {/* Search button */}
-        <button className="search-btn" onClick={onSearch}>
+        <button className="search-btn" onClick={handleSearch}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30"
@@ -63,35 +158,34 @@ function SearchButton({ service, searchValue, onServiceChange, onSearchChange, o
           </svg>
         </button>
 
-        {/* Search input */}
+
+        {/* Provider Search Input */}
         <input
           type="text"
           placeholder="Search Provider by name"
-          value={searchValue}
-          onChange={(e) => handleChange(e.target.value)}
+          value={providerInput}
+          onChange={(e) => handleProviderInput(e.target.value)}
           className="provider-search-filter"
         />
-      </div>
+        {showProviders && (
+          <ul className="search-results">
+            {providerResults.length > 0 ? (
+              providerResults.map((provider, idx) => (
+                <li
+                  key={idx}
+                  className="result-item"
+                  onClick={() => selectProvider(provider)}
+                >
+                  {provider}
+                </li>
+              ))
+            ) : (
+              <li className="no-results">No providers found</li>
+            )}
+          </ul>
+        )}
 
-        {/* dropdown*/}
-        {showDropdown && (
-        <ul className="search-results">
-          {results.length > 0 ? (
-            results.map((provider, index) => (
-              <li
-                key={index}
-                className="result-item"
-                onClick={() => handleSelect(provider)}
-              >
-                {provider}
-              </li>
-            ))
-          ) : (
-            <li className="no-results">No providers found</li>
-          )}
-        </ul>
-      )}
-      
+      </div>
     </div>
   );
 }
